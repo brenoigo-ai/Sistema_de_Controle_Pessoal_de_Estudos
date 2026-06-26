@@ -50,6 +50,45 @@ Erro Ortográfico (UX) O Erro: Na função de atualizar a sessão, a mensagem es
 
 Observação: não esqueça de instalar a biblioteca gráfica executando o comando no terminal: pip install matplotlib
 
+##########################################################################################################################################
+
+ATUALIZAÇÃO: uso da ferramenta Streamlit:
+
+Uso de Inteligência Artificial na Conversão
+
+IA Utilizada
+
+Claude Sonnet 4.6 (Anthropic) — Modelo de linguagem de grande escala desenvolvido pela Anthropic, com capacidades avançadas de geração e análise de código Python, explicação didática de conceitos de programação e apoio ao desenvolvimento de software.
+
+Versão: claude-sonnet-4-6 | Acesso: claude.ai
+
+
+Objetivo da Conversão
+
+
+A IA foi utilizada para apoiar a migração do projeto "Sistema de Controle Pessoal de Estudos" — originalmente desenvolvido para execução no terminal Python — para uma aplicação web interativa com interface gráfica no navegador, utilizando o framework Streamlit. O processo envolveu a substituição sistemática de todos os comandos de entrada (input()) por widgets interativos do Streamlit; a conversão das saídas via print() em componentes visuais semânticos (st.success(), st.error(), st.dataframe() etc.); a adaptação do modelo de execução sequencial do terminal para o modelo de reruns do Streamlit com gerenciamento de estado persistente via st.session_state; e a preparação do código para deploy público no Streamlit Community Cloud — sem nenhuma alteração da lógica de negócio, da estrutura de dados JSON nem dos algoritmos originais.
+
+
+
+
+Histórico de Prompts Utilizados
+
+Prompt 1 — Conversão completa do código terminal para aplicação web Streamlit com instruções de deploy
+
+prompt
+[<role> Você é um Desenvolvedor Python Sênior especialista em Streamlit e em didática para alunos iniciantes de graduação em IA. </role> <context> Sou aluno do 1º período de Bacharelado em Inteligência Artificial no PIT (Instituto de Tecnologia do Piauí). Desenvolvi um "Sistema de Controle Pessoal de Estudos" em Python que roda no terminal. É um CRUD completo com: lista de dicionários, persistência em arquivo JSON e dashboard com matplotlib. O projeto será entregue como aplicação web com link público via Streamlit Community Cloud. </context> <task> Converta o código-terminal abaixo em uma aplicação web Streamlit completa, funcional e pronta para deploy no Streamlit Community Cloud. Gere também o requirements.txt e os passos de deploy. </task> <rules> - LÓGICA DE NEGÓCIO: NÃO altere a estrutura dos dicionários, a lógica de cálculo de taxa_acerto nem o sistema de leitura/escrita JSON. Está perfeita e sem bugs. - INPUTS: Substitua TODOS os input() pelos widgets corretos: st.text_input, st.number_input, st.button. Use st.form() para agrupar campos de criação e edição e evitar re-renders parciais. - OUTPUTS: Substitua TODOS os print() por: st.success() (confirmações), st.error() (erros), st.warning() (avisos), st.info() (informativos), st.dataframe() (listagem de sessões). - NAVEGAÇÃO: Use st.sidebar com st.radio() para o menu principal com as opções: "📝 Nova Sessão", "📋 Histórico", "✏️ Editar Sessão", "🗑️ Excluir Sessão", "📊 Dashboard". - SESSION STATE: Inicialize st.session_state["sessoes"] no carregamento inicial. Após TODA operação CRUD que modifique dados: atualize st.session_state["sessoes"] e chame st.rerun() para forçar refresh correto da UI. - GRÁFICO: Substitua plt.show() por st.pyplot(fig) passando a figura explicitamente. Feche a figura com plt.close(fig) após renderizar para evitar memory leak. - DEPLOY: Salve o JSON com caminho relativo simples ("sessoes.json"). Nenhum caminho absoluto. A app deve rodar sem erros no Streamlit Community Cloud. - DEPENDÊNCIAS: Use APENAS as bibliotecas já existentes no código (json, os, datetime, matplotlib, streamlit). NÃO adicione pandas, plotly ou qualquer outra. - WIDGET KEYS: Atribua key= único e explícito a cada widget para evitar DuplicateWidgetID error. - CÓDIGO LIMPO: Arquivo único app.py com st.set_page_config() como primeira chamada Streamlit. - NÃO altere os nomes das chaves do dicionário JSON em nenhuma hipótese ("id", "data", "disciplina", "assunto", "tempo_liquido_min", "total_questoes", "total_acertos", "taxa_acerto"). </rules> <thinking_process> Antes de gerar qualquer código, raciocine dentro de <thinking>: 1. Liste cada input() do original e mapeie o widget Streamlit exato que o substituirá. 2. Liste cada print() e decida: success / error / warning / info / write / dataframe. 3. Identifique todos os pontos de inicialização e atualização do st.session_state. 4. Mapeie onde st.rerun() é necessário (após cada CRUD que persiste dados). 5. Verifique se há risco de widget key collision e resolva com key= explícita. 6. Confirme que requirements.txt cobre todas as dependências externas (streamlit, matplotlib). Somente após esse raciocínio completo, gere o código. </thinking_process> <format> Entregue nesta ordem exata: 1. Bloco de código Python — app.py completo com comentários explicativos 2. Bloco de código — requirements.txt 3. "🔄 Principais Mudanças" — lista de até 10 itens didáticos explicando cada adaptação 4. "💻 Como Rodar Localmente" — 3 comandos de terminal 5. "🚀 Como Fazer Deploy no Streamlit Community Cloud" — passo a passo em 5 etapas </format> <code_to_convert> [em anexo] </code_to_convert>]
+
+
+Resultado:
+A IA processou o código-fonte original e entregou a conversão completa em cinco blocos estruturados: 
+(1) o arquivo app.py funcional com st.set_page_config() como primeira instrução obrigatória do framework, navegação lateral via st.sidebar.radio() substituindo o while True do terminal, formulários agrupados com st.form() e st.form_submit_button() para evitar rerenders parciais a cada keystroke, gerenciamento de estado persistente com st.session_state["sessoes"] inicializado uma única vez por sessão de browser, padrão de feedback em duas etapas via session_state["feedback"] + st.rerun() para garantir que mensagens de confirmação sejam exibidas antes do recarregamento, gráfico renderizado com st.pyplot(fig) e liberação de memória com plt.close(fig), e chaves dinâmicas nos formulários de edição (ex.: key=f"edit_disc_{id_selecionado}") garantindo pré-preenchimento correto ao trocar de registro no st.selectbox;
+(2) o requirements.txt com apenas streamlit e matplotlib, respeitando a restrição de não adicionar dependências externas;
+(3) a seção "🔄 Principais Mudanças" com 10 itens didáticos explicando cada decisão de adaptação do paradigma terminal → web;
+(4) as instruções "💻 Como Rodar Localmente" com 3 comandos de terminal (pip install, streamlit run, URL de acesso);
+(5) o guia "🚀 Como Fazer Deploy no Streamlit Community Cloud" em 5 etapas detalhadas (preparação do repositório GitHub, criação de conta, configuração do deploy, execução e obtenção do link público), incluindo nota técnica sobre a efemeridade do sistema de arquivos no plano gratuito e alternativas para persistência em produção.
+
+##########################################################################################################################################
+
 Desde já agradecemos o interesse.
 
 Atenciosamente,
