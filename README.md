@@ -89,6 +89,10 @@ A IA processou o código-fonte original e entregou a conversão completa em cinc
 
 ##########################################################################################################################################
 
+Link para acessar e usar a aplicação web interativa:
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://sistemadecontrolepeappaldeestudos-zbmtrtkt5y2oryl7mr2t4n.streamlit.app/)
+
+
 Desde já agradecemos o interesse.
 
 Atenciosamente,
